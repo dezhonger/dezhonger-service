@@ -339,6 +339,54 @@
     setStatus(status, '', '')
   }
 
+  function appendFactorizationResult(container, value, groups, unresolved) {
+    const section = document.createElement('section')
+    section.className = 'math-result-card math-result-wide'
+    const heading = document.createElement('h3')
+    heading.textContent = '质因数分解'
+    const equation = document.createElement('div')
+    equation.className = 'factor-equation'
+    const source = document.createElement('span')
+    source.className = 'factor-source'
+    source.textContent = String(value)
+    const equals = document.createElement('span')
+    equals.className = 'factor-equals'
+    equals.textContent = '='
+    const list = document.createElement('span')
+    list.className = 'factor-list'
+
+    const factors = groups.map(group => ({ value: String(group.value), exponent: group.exponent, unresolved: false }))
+    unresolved.forEach(item => factors.push({ value: String(item), exponent: 1, unresolved: true }))
+    factors.forEach((factor, index) => {
+      if (index) {
+        const operator = document.createElement('span')
+        operator.className = 'factor-operator'
+        operator.textContent = '×'
+        list.append(operator)
+      }
+      const term = document.createElement('span')
+      term.className = factor.unresolved ? 'factor-term factor-unresolved' : 'factor-term'
+      const number = document.createElement('span')
+      number.className = 'factor-number'
+      number.textContent = factor.value
+      term.append(number)
+      if (factor.exponent > 1) {
+        const exponent = document.createElement('sup')
+        exponent.textContent = String(factor.exponent)
+        term.append(exponent)
+      }
+      if (factor.unresolved) {
+        const note = document.createElement('small')
+        note.textContent = '未分解余因子'
+        term.append(note)
+      }
+      list.append(term)
+    })
+    equation.append(source, equals, list)
+    section.append(heading, equation)
+    container.append(section)
+  }
+
   primeButton.addEventListener('click', () => {
     prepareOutput(integerOutput, integerStatus)
     try {
@@ -368,9 +416,7 @@
       await nextFrame()
       const result = await factorize(n)
       const groups = groupFactors(result.factors)
-      const parts = groups.map(group => `${group.value}${group.exponent > 1 ? `^{${group.exponent}}` : ''}`)
-      result.unresolved.forEach(value => parts.push(`\\underbrace{${value}}_{\\text{未分解余因子}}`))
-      appendResult(integerOutput, '质因数分解', `${n}=${parts.join('\\cdot ') || n}`)
+      appendFactorizationResult(integerOutput, n, groups, result.unresolved)
       const probable = groups.filter(group => !group.proven).map(group => String(group.value))
       if (!result.unresolved.length && !probable.length) {
         setStatus(integerStatus, '分解完成；乘积与原数完全一致。', 'success')
@@ -379,7 +425,6 @@
       } else {
         setStatus(integerStatus, '已返回精确的部分分解；困难余因子在本次浏览器时间预算内未拆开。', 'working')
       }
-      typeset([integerOutput])
     } catch (error) {
       setStatus(integerStatus, error.message, 'error')
     } finally {

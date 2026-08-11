@@ -6,46 +6,52 @@
     <meta name="description" content="Dezhonger 的数学、代码与个人效率工具。">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
     <title>Dezhonger Service</title>
-    <link rel="stylesheet" href="/assets/app.css?v=20260812a">
+    <link rel="stylesheet" href="/assets/app.css?v=20260812b">
   </head>
   <body>
     <div class="site-shell">
       <header class="site-header">
         <a class="brand" href="/">Dezhonger</a>
         <nav class="site-nav" aria-label="主导航">
-          <a href="/tools/">数学工具</a>
-          <a href="/code-comment-remover/">代码工具</a>
+          <a href="/tools/">工具</a>
+          <a href="/speed/">测速</a>
           <a href="/memo/">备忘录</a>
         </nav>
       </header>
       <main>
         <section class="hero">
-          <p class="eyebrow">Personal utility service</p>
-          <h1>计算、整理，<br>然后继续创造。</h1>
-          <p class="hero-copy">独立部署的实用工具集合：浏览器端精确数学计算、代码注释去除与文本对比，以及带账号隔离和离线保存能力的私人备忘录。</p>
+          <p class="eyebrow">Dezhonger Service</p>
+          <h1>简单的工具，<br>专注解决问题。</h1>
+          <p class="hero-copy">一个独立部署的个人工作台。精确计算、代码处理、备忘录和服务器状态，都在同一个清晰、克制的界面中。</p>
         </section>
         <section class="card-grid" aria-label="服务入口">
           <a class="card" href="/tools/">
-            <span class="card-mark">01 / EXACT MATH</span>
+            <span class="card-mark">01 · EXACT MATH</span>
             <h2>数学工具</h2>
             <p>数论、二至四次方程与矩阵实验室，核心计算在浏览器内完成。</p>
             <span class="card-arrow">打开工具 →</span>
           </a>
           <a class="card" href="/code-comment-remover/">
-            <span class="card-mark">02 / CODE</span>
+            <span class="card-mark">02 · CODE</span>
             <h2>代码工具</h2>
             <p>去除多种语言的代码注释，并通过 Monaco 编辑器对比处理结果。</p>
             <span class="card-arrow">处理代码 →</span>
           </a>
           <a class="card" href="/memo/">
-            <span class="card-mark">03 / PRIVATE</span>
+            <span class="card-mark">03 · PRIVATE</span>
             <h2>备忘录</h2>
             <p>账号隔离、自动同步、离线队列、Markdown 预览和 JSON 导入导出。</p>
             <span class="card-arrow">登录备忘录 →</span>
           </a>
+          <a class="card" href="/speed/">
+            <span class="card-mark">04 · NETWORK</span>
+            <h2>服务器测速</h2>
+            <p>测量当前浏览器到香港服务器的 HTTPS 延迟、抖动和页面加载阶段。</p>
+            <span class="card-arrow">开始测速 →</span>
+          </a>
         </section>
       </main>
-      <footer class="site-footer">Dezhonger Service · Self-hosted with Go, PostgreSQL and Docker</footer>
+      <footer class="site-footer">Dezhonger Service · Go · PostgreSQL · Docker</footer>
     </div>
   </body>
 </html>

@@ -44,6 +44,7 @@ const elements = {
   authMessage: document.querySelector('#auth-message'),
   accountEmail: document.querySelector('#account-email'),
   adminLink: document.querySelector('#admin-link'),
+  databaseLink: document.querySelector('#database-link'),
   signOut: document.querySelector('#sign-out'),
   onlineStatus: document.querySelector('#online-status'),
   syncStatus: document.querySelector('#sync-status'),
@@ -810,6 +811,7 @@ async function activateUser(user) {
     elements.accountEmail.textContent = ''
     elements.accountEmail.hidden = true
     elements.adminLink.hidden = true
+    elements.databaseLink.hidden = true
     elements.signOut.hidden = true
     return
   }
@@ -817,6 +819,7 @@ async function activateUser(user) {
   elements.accountEmail.textContent = state.user.username || '已登录'
   elements.accountEmail.hidden = false
   elements.adminLink.hidden = state.user.role !== 'admin'
+  elements.databaseLink.hidden = state.user.role !== 'admin'
   elements.signOut.hidden = false
   setVisibleView('app')
   updateConnectionStatus()

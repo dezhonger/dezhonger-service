@@ -66,6 +66,7 @@ func (a *App) Run(ctx context.Context) error {
 
 func (a *App) routes() {
 	a.mux.HandleFunc("GET /api/healthz", a.healthz)
+	a.mux.HandleFunc("GET /api/ping", a.ping)
 	a.mux.HandleFunc("POST /api/auth/login", a.login)
 	a.mux.Handle("POST /api/auth/logout", a.requireAuth(http.HandlerFunc(a.logout), true))
 	a.mux.Handle("GET /api/auth/me", a.requireAuth(http.HandlerFunc(a.me), true))
@@ -76,6 +77,8 @@ func (a *App) routes() {
 	a.mux.Handle("GET /api/admin/users", a.requireAdmin(http.HandlerFunc(a.listUsers)))
 	a.mux.Handle("POST /api/admin/users", a.requireAdmin(http.HandlerFunc(a.createUser)))
 	a.mux.Handle("PATCH /api/admin/users/{id}", a.requireAdmin(http.HandlerFunc(a.updateUser)))
+	a.mux.Handle("GET /api/admin/database/tables", a.requireAdmin(http.HandlerFunc(a.listDatabaseTables)))
+	a.mux.Handle("GET /api/admin/database/tables/{table}", a.requireAdmin(http.HandlerFunc(a.inspectDatabaseTable)))
 }
 
 func (a *App) healthz(w http.ResponseWriter, r *http.Request) {
@@ -86,6 +89,14 @@ func (a *App) healthz(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+}
+
+func (a *App) ping(w http.ResponseWriter, _ *http.Request) {
+	writeJSON(w, http.StatusOK, map[string]any{
+		"status":         "ok",
+		"server_time_ms": time.Now().UnixMilli(),
+		"region":         a.cfg.ServerRegion,
+	})
 }
 
 func (a *App) securityHeaders(next http.Handler) http.Handler {

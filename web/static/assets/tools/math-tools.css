@@ -1,5 +1,5 @@
 .math-page .tool-shell {
-  width: min(1240px, 96vw);
+  width: min(1240px, calc(100% - 40px));
 }
 
 .math-page .tool-hero {
@@ -7,7 +7,7 @@
 }
 
 .math-page .tool-panel {
-  overflow: hidden;
+  overflow: visible;
 }
 
 .math-page .tool-panel + .tool-panel {
@@ -24,8 +24,8 @@
 .math-intro-item {
   padding: 14px;
   border: 1px solid var(--tool-line);
-  border-radius: 14px;
-  background: #f9fbff;
+  border-radius: 10px;
+  background: #f8f8f8;
 }
 
 .math-intro-item strong,
@@ -84,7 +84,7 @@
 .matrix-input {
   width: 100%;
   border: 1px solid var(--tool-line-strong);
-  border-radius: 12px;
+  border-radius: 9px;
   color: var(--tool-text);
   background: #fff;
   font: inherit;
@@ -115,7 +115,7 @@
 .math-select:focus,
 .matrix-input:focus {
   border-color: var(--tool-primary);
-  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.12);
+  box-shadow: 0 0 0 1px var(--tool-text);
 }
 
 .math-mode-switch {
@@ -202,9 +202,11 @@
   min-width: 0;
   padding: 16px;
   border: 1px solid var(--tool-line);
-  border-radius: 14px;
-  background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+  border-radius: 10px;
+  background: #fff;
 }
+
+.math-result-card.math-result-wide { grid-column: 1 / -1; }
 
 .math-result-card h3 {
   margin: 0 0 10px;
@@ -215,7 +217,7 @@
   max-width: 100%;
   overflow-x: auto;
   padding: 9px 4px;
-  color: #172b4d;
+  color: var(--tool-text);
 }
 
 .math-display mjx-container {
@@ -232,10 +234,10 @@
 
 .precision-note {
   padding: 13px 15px;
-  border: 1px solid #cfe0fa;
-  border-radius: 14px;
-  color: #264368;
-  background: #f3f7ff;
+  border: 1px solid var(--tool-line);
+  border-radius: 10px;
+  color: var(--tool-muted);
+  background: #f8f8f8;
   font-size: 13px;
   line-height: 1.7;
 }
@@ -264,6 +266,31 @@
 .matrix-output .math-result-card {
   overflow: hidden;
 }
+
+.factor-equation {
+  display: grid;
+  grid-template-columns: minmax(0, auto) auto minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  padding: 10px 0;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.factor-source,
+.factor-number {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.factor-source { color: var(--tool-muted); }
+.factor-list { min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px 7px; }
+.factor-term { min-width: 0; display: inline-flex; align-items: baseline; gap: 2px; }
+.factor-operator { color: var(--tool-muted); }
+.factor-unresolved { padding: 2px 6px; border-radius: 6px; color: #8a5205; background: #fff7e6; }
+.factor-unresolved small { margin-left: 5px; font-family: inherit; font-size: 10px; }
 
 [hidden] {
   display: none !important;
@@ -300,4 +327,7 @@
   .math-actions .math-select {
     width: 100%;
   }
+
+  .factor-equation { grid-template-columns: 1fr; gap: 4px; }
+  .factor-equals { display: none; }
 }

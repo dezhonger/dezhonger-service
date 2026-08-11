@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="测量当前浏览器到 Dezhonger 服务器的 HTTPS 延迟和连接质量。">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+    <title>服务器测速 | Dezhonger</title>
+    <link rel="stylesheet" href="/assets/app.css?v=20260812b">
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">Dezhonger</a>
+        <nav class="site-nav"><a href="/tools/">工具</a><a href="/speed/" aria-current="page">测速</a><a href="/memo/">备忘录</a></nav>
+      </header>
+      <main class="page-main">
+        <div class="page-heading">
+          <p class="eyebrow">Network diagnostics</p>
+          <h1>服务器测速</h1>
+          <p>连续请求服务器的轻量 API，测量当前浏览器到服务器的 HTTPS 往返延迟。结果会受到本地网络、Clash 路由和运营商线路影响。</p>
+        </div>
+
+        <section class="speed-summary">
+          <div class="panel latency-primary">
+            <div>
+              <span class="metric-label">平均延迟</span>
+              <p id="latency-value" class="latency-value">—<span>ms</span></p>
+            </div>
+            <div>
+              <p id="latency-grade" class="latency-grade">点击开始测速</p>
+              <button id="run-speed-test" class="button primary" type="button">开始测速</button>
+            </div>
+          </div>
+          <div>
+            <div class="metric-grid">
+              <div class="metric"><span class="metric-label">最低</span><strong id="metric-min" class="metric-value">—</strong></div>
+              <div class="metric"><span class="metric-label">中位数</span><strong id="metric-median" class="metric-value">—</strong></div>
+              <div class="metric"><span class="metric-label">P95</span><strong id="metric-p95" class="metric-value">—</strong></div>
+              <div class="metric"><span class="metric-label">抖动</span><strong id="metric-jitter" class="metric-value">—</strong></div>
+              <div class="metric"><span class="metric-label">成功请求</span><strong id="metric-success" class="metric-value">—</strong></div>
+              <div class="metric"><span class="metric-label">服务器区域</span><strong id="metric-region" class="metric-value">香港</strong></div>
+            </div>
+            <canvas id="speed-chart" class="speed-chart" aria-label="延迟采样趋势图"></canvas>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title-row actions"><h2>本次页面连接</h2><span id="navigation-total" class="latency-grade"></span></div>
+          <div class="navigation-grid">
+            <div class="navigation-step"><span>DNS</span><strong id="nav-dns">—</strong></div>
+            <div class="navigation-step"><span>TCP</span><strong id="nav-tcp">—</strong></div>
+            <div class="navigation-step"><span>TLS</span><strong id="nav-tls">—</strong></div>
+            <div class="navigation-step"><span>TTFB</span><strong id="nav-ttfb">—</strong></div>
+            <div class="navigation-step"><span>总加载</span><strong id="nav-total">—</strong></div>
+          </div>
+          <p class="speed-note">测速使用 12 次顺序请求。它反映浏览器到本服务的应用层往返时间，不等同于 ICMP Ping，也不代表服务器访问 Google 的延迟。</p>
+          <p id="speed-message" class="message" aria-live="polite" hidden></p>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/assets/speed.js?v=20260812b"></script>
+  </body>
+</html>

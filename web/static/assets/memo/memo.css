@@ -1,19 +1,19 @@
 :root {
   color-scheme: light;
-  --memo-bg: #eef3f9;
+  --memo-bg: #ffffff;
   --memo-surface: #ffffff;
-  --memo-surface-soft: #f7f9fc;
-  --memo-text: #14213d;
-  --memo-muted: #637089;
-  --memo-line: #dbe3ee;
-  --memo-line-strong: #c4cfdf;
-  --memo-primary: #315cdd;
-  --memo-primary-strong: #2449ba;
-  --memo-primary-soft: #edf2ff;
-  --memo-success: #117a50;
+  --memo-surface-soft: #f7f7f8;
+  --memo-text: #171717;
+  --memo-muted: #6b6b6b;
+  --memo-line: #e5e5e5;
+  --memo-line-strong: #d0d0d0;
+  --memo-primary: #10a37f;
+  --memo-primary-strong: #0d8a6c;
+  --memo-primary-soft: #edf8f5;
+  --memo-success: #08765b;
   --memo-danger: #b42318;
   --memo-danger-soft: #fff1f0;
-  --memo-shadow: 0 24px 80px rgba(29, 49, 83, 0.12);
+  --memo-shadow: none;
 }
 
 * {
@@ -32,11 +32,8 @@ body {
 
 body {
   color: var(--memo-text);
-  background:
-    radial-gradient(circle at 8% 0%, rgba(111, 143, 231, 0.2), transparent 28rem),
-    radial-gradient(circle at 100% 100%, rgba(92, 204, 166, 0.13), transparent 30rem),
-    var(--memo-bg);
-  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--memo-bg);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 button,
@@ -75,24 +72,21 @@ textarea:focus-visible {
 }
 
 .memo-shell {
-  width: min(1480px, calc(100vw - 32px));
+  width: min(1480px, calc(100vw - 40px));
   min-height: 100vh;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 0 0 20px;
 }
 
 .memo-topbar {
-  min-height: 58px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  padding: 10px 16px;
-  border: 1px solid rgba(219, 227, 238, 0.92);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 10px 32px rgba(29, 49, 83, 0.08);
-  backdrop-filter: blur(16px);
+  padding: 0;
+  border-bottom: 1px solid var(--memo-line);
+  background: #fff;
 }
 
 .memo-brand-group,
@@ -112,9 +106,25 @@ textarea:focus-visible {
 
 .memo-brand {
   color: var(--memo-text);
-  font-size: 20px;
-  font-weight: 750;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 650;
   text-decoration: none;
+}
+
+.memo-brand::before {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: #fff;
+  background: var(--memo-text);
+  content: "D";
+  font-size: 12px;
+  font-weight: 750;
 }
 
 .memo-product-name {
@@ -168,7 +178,7 @@ textarea:focus-visible {
   justify-content: center;
   padding: 9px 14px;
   border: 1px solid var(--memo-line-strong);
-  border-radius: 10px;
+  border-radius: 8px;
   color: var(--memo-text);
   background: var(--memo-surface);
   cursor: pointer;
@@ -180,8 +190,8 @@ textarea:focus-visible {
 }
 
 .memo-button:hover:not(:disabled) {
-  border-color: #aab9cf;
-  transform: translateY(-1px);
+  border-color: var(--memo-line-strong);
+  background: var(--memo-surface-soft);
 }
 
 .memo-button:disabled {
@@ -230,10 +240,9 @@ textarea:focus-visible {
 .memo-gate-card {
   width: min(460px, 100%);
   padding: 34px;
-  border: 1px solid rgba(219, 227, 238, 0.94);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: var(--memo-shadow);
+  border: 1px solid var(--memo-line);
+  border-radius: 14px;
+  background: #fff;
 }
 
 .memo-gate-card h1 {
@@ -266,7 +275,7 @@ textarea:focus-visible {
 
 .memo-eyebrow {
   margin: 0 0 9px;
-  color: #4d66ad;
+  color: var(--memo-muted);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -348,9 +357,9 @@ textarea:focus-visible {
   grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
   margin-top: 14px;
   overflow: hidden;
-  border: 1px solid rgba(219, 227, 238, 0.94);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--memo-line);
+  border-radius: 14px;
+  background: #fff;
   box-shadow: var(--memo-shadow);
 }
 
@@ -359,7 +368,7 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--memo-line);
-  background: linear-gradient(180deg, #f9fbff 0%, #f5f8fc 100%);
+  background: #f7f7f8;
 }
 
 .memo-sidebar-head {
@@ -474,12 +483,12 @@ textarea:focus-visible {
 
 .memo-list-item:hover {
   border-color: var(--memo-line);
-  background: rgba(255, 255, 255, 0.8);
+  background: #ededee;
 }
 
 .memo-list-item[aria-current="true"] {
-  border-color: #cbd7fa;
-  background: var(--memo-primary-soft);
+  border-color: #dfdfe1;
+  background: #e9e9eb;
 }
 
 .memo-list-title,
@@ -517,8 +526,8 @@ textarea:focus-visible {
   padding: 2px 7px;
   overflow: hidden;
   border-radius: 999px;
-  color: #4b5f91;
-  background: #edf2ff;
+  color: var(--memo-muted);
+  background: #e8e8e9;
   font-size: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -584,10 +593,9 @@ textarea:focus-visible {
   display: grid;
   place-items: center;
   margin: 0 auto 18px;
-  border-radius: 17px;
+  border-radius: 14px;
   color: #fff;
-  background: linear-gradient(145deg, #315cdd, #6d5ce8);
-  box-shadow: 0 16px 32px rgba(49, 92, 221, 0.24);
+  background: var(--memo-text);
   font-size: 22px;
   font-weight: 800;
 }
@@ -714,7 +722,7 @@ textarea:focus-visible {
 .memo-mode-switch button[aria-pressed="true"] {
   color: var(--memo-text);
   background: var(--memo-surface);
-  box-shadow: 0 2px 8px rgba(29, 49, 83, 0.09);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
 }
 
 .memo-content-input,
@@ -831,7 +839,7 @@ textarea:focus-visible {
   border-radius: 11px;
   color: var(--memo-text);
   background: rgba(255, 255, 255, 0.97);
-  box-shadow: 0 16px 40px rgba(29, 49, 83, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
   font-size: 13px;
 }
 

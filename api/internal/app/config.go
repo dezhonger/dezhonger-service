@@ -11,6 +11,7 @@ type Config struct {
 	DatabaseURL  string
 	ListenAddr   string
 	PublicOrigin string
+	ServerRegion string
 	CookieName   string
 	CookieSecure bool
 	SessionTTL   time.Duration
@@ -21,6 +22,7 @@ func LoadConfig() (Config, error) {
 		DatabaseURL:  os.Getenv("DATABASE_URL"),
 		ListenAddr:   envOr("LISTEN_ADDR", ":8080"),
 		PublicOrigin: os.Getenv("PUBLIC_ORIGIN"),
+		ServerRegion: envOr("SERVER_REGION", "Tencent Cloud · Hong Kong"),
 		CookieName:   envOr("SESSION_COOKIE_NAME", "dz_session"),
 		CookieSecure: envBool("COOKIE_SECURE", true),
 		SessionTTL:   envDuration("SESSION_TTL", 30*24*time.Hour),

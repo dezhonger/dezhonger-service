@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'">
+    <title>数据库浏览器 | Dezhonger</title>
+    <link rel="stylesheet" href="/assets/app.css?v=20260812b">
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">Dezhonger</a>
+        <nav class="site-nav"><a href="/memo/">备忘录</a><a href="/admin/">用户管理</a><a href="/database/" aria-current="page">数据库</a></nav>
+      </header>
+      <main class="page-main">
+        <div class="page-heading">
+          <p class="eyebrow">Read-only database explorer</p>
+          <h1>数据库浏览器</h1>
+          <p>查看 public schema 的表、字段定义和数据。页面只提供读取功能，密码哈希、会话令牌和其他敏感列会自动隐藏。</p>
+        </div>
+
+        <section class="db-layout">
+          <aside class="db-sidebar">
+            <div class="db-sidebar-head"><strong>public</strong><span id="db-table-count">正在加载表…</span></div>
+            <div id="db-table-list" class="db-table-list"></div>
+          </aside>
+          <div class="db-main">
+            <div id="db-empty" class="db-empty"><div><strong>选择一张表</strong><p>查看字段结构和当前数据。</p></div></div>
+            <div id="db-content" hidden>
+              <div class="db-toolbar">
+                <div><h2 id="db-title" class="db-title"></h2><p id="db-subtitle" class="db-subtitle"></p></div>
+                <button id="db-refresh" class="button" type="button">刷新</button>
+              </div>
+              <div class="db-tabs" role="tablist">
+                <button id="db-data-tab" class="db-tab" type="button" aria-pressed="true">数据</button>
+                <button id="db-structure-tab" class="db-tab" type="button" aria-pressed="false">表结构</button>
+              </div>
+              <div id="db-view"></div>
+              <div id="db-pagination" class="db-pagination">
+                <button id="db-prev" class="button" type="button">上一页</button>
+                <span id="db-page-label"></span>
+                <button id="db-next" class="button" type="button">下一页</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <p class="security-note">安全说明：此页面要求管理员登录；API 不接受 SQL、不提供新增、修改或删除操作，数据库端口仍未对公网开放。</p>
+        <p id="db-message" class="message" aria-live="polite" hidden></p>
+      </main>
+    </div>
+    <script type="module" src="/assets/database.js?v=20260812b"></script>
+  </body>
+</html>

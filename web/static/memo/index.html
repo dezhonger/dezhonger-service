@@ -11,7 +11,7 @@
       content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
     >
     <title>Memo | Dezhonger</title>
-    <link rel="stylesheet" href="/assets/memo/memo.css?v=20260812a">
+    <link rel="stylesheet" href="/assets/memo/memo.css?v=20260812b">
   </head>
   <body>
     <main class="memo-shell">
@@ -23,7 +23,9 @@
         <div class="memo-topbar-actions">
           <span id="online-status" class="memo-status-dot" data-online="true">在线</span>
           <span id="account-email" class="memo-account-email" hidden></span>
+          <a class="memo-button ghost compact" href="/speed/">测速</a>
           <a id="admin-link" class="memo-button ghost compact" href="/admin/" hidden>用户管理</a>
+          <a id="database-link" class="memo-button ghost compact" href="/database/" hidden>数据库</a>
           <a class="memo-button ghost compact" href="/change-password/">修改密码</a>
           <button id="sign-out" class="memo-button ghost compact" type="button" hidden>退出</button>
         </div>
@@ -216,6 +218,6 @@
     </main>
 
     <div id="memo-toast" class="memo-toast" role="status" aria-live="polite" hidden></div>
-    <script type="module" src="/assets/memo/memo-app.js?v=20260812a"></script>
+    <script type="module" src="/assets/memo/memo-app.js?v=20260812b"></script>
   </body>
 </html>

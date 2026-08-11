@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: dezhonger
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U dezhonger -d dezhonger"]
       interval: 5s

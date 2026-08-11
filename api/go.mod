@@ -1,4 +1,4 @@
-module github.com/dezhonger/dezhonger_service/api
+module github.com/dezhonger/dezhonger-service/api
 
 go 1.25.0
 

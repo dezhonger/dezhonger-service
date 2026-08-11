@@ -12,7 +12,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/dezhonger/dezhonger_service/api/internal/app"
+	"github.com/dezhonger/dezhonger-service/api/internal/app"
 	"golang.org/x/term"
 )
 

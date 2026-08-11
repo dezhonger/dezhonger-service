@@ -58,7 +58,7 @@ docker compose build
 服务器只需要 Git 与 Docker。部署目录推荐为 `~/service`。
 
 ```bash
-git clone https://github.com/dezhonger/dezhonger-service.git ~/service
+git clone https://github.com/dezhonger/dezhonger_service.git ~/service
 cd ~/service
 cp .env.example .env
 ```

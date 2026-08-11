@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+    <title>用户管理 | Dezhonger</title>
+    <link rel="stylesheet" href="/assets/app.css?v=20260812a">
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href="/">Dezhonger</a>
+        <nav class="site-nav"><a href="/memo/">备忘录</a><a href="/change-password/">修改密码</a></nav>
+      </header>
+      <main class="page-main">
+        <div class="page-heading"><p class="eyebrow">Administration</p><h1>用户管理</h1><p>创建账号、分配角色、停用账号或重置临时密码。新建和重置后的密码都要求用户首次登录时修改。</p></div>
+        <section class="panel">
+          <h2>创建用户</h2>
+          <form id="create-user-form" class="form-grid">
+            <label class="field">用户名<input id="new-username" type="text" minlength="3" maxlength="32" pattern="[a-z0-9][a-z0-9._-]{2,31}" autocomplete="off" required></label>
+            <label class="field">临时密码<input id="new-user-password" type="password" minlength="12" maxlength="72" autocomplete="new-password" required></label>
+            <label class="field">角色<select id="new-user-role"><option value="user">普通用户</option><option value="admin">管理员</option></select></label>
+            <div class="actions"><button id="create-user-submit" class="button primary" type="submit">创建用户</button></div>
+          </form>
+          <p id="admin-message" class="message" aria-live="polite" hidden></p>
+        </section>
+        <section class="panel">
+          <div class="actions panel-title-row"><h2>现有用户</h2><button id="refresh-users" class="button" type="button">刷新</button></div>
+          <div id="user-list" class="user-list" aria-live="polite"></div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/assets/admin.js?v=20260812a"></script>
+  </body>
+</html>

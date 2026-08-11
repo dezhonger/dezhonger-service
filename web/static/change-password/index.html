@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+    <title>修改密码 | Dezhonger</title>
+    <link rel="stylesheet" href="/assets/app.css?v=20260812a">
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header"><a class="brand" href="/">Dezhonger</a><nav class="site-nav"><a href="/memo/">返回备忘录</a></nav></header>
+      <main class="page-main">
+        <section class="panel auth-panel">
+          <div class="page-heading">
+            <p class="eyebrow">Account security</p>
+            <h1>修改密码</h1>
+            <p id="account-copy">首次登录或管理员重置密码后，必须先设置自己的新密码。</p>
+          </div>
+          <form id="password-form" class="auth-form">
+            <label class="field">当前密码<input id="current-password" type="password" autocomplete="current-password" minlength="12" maxlength="72" required></label>
+            <label class="field">新密码<input id="new-password" type="password" autocomplete="new-password" minlength="12" maxlength="72" required></label>
+            <label class="field">再次输入新密码<input id="confirm-password" type="password" autocomplete="new-password" minlength="12" maxlength="72" required></label>
+            <div class="auth-actions"><button id="password-submit" class="button primary" type="submit">保存新密码</button></div>
+          </form>
+          <p id="password-message" class="message" aria-live="polite" hidden></p>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/assets/change-password.js?v=20260812a"></script>
+  </body>
+</html>

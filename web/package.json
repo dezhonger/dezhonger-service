@@ -1,0 +1,17 @@
+{
+  "name": "dezhonger-service-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "dompurify": "3.4.13",
+    "marked": "18.0.9"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

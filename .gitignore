@@ -1,0 +1,7 @@
+.DS_Store
+.env
+backups/
+web/dist/
+web/node_modules/
+*.log
+coverage.out

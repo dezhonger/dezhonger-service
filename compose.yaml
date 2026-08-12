@@ -59,7 +59,7 @@ services:
     volumes:
       - certbot-certs:/etc/letsencrypt:ro
       - certbot-webroot:/var/www/certbot:ro
-    networks: [backend]
+    networks: [backend, edge]
 
   certbot:
     container_name: certbot
@@ -80,3 +80,6 @@ volumes:
 networks:
   backend:
     driver: bridge
+  edge:
+    name: dezhonger-edge
+    external: true

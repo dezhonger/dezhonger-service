@@ -8,6 +8,7 @@
     ['工具', 'Tools'],
     ['测速', 'Speed'],
     ['备忘录', 'Memo'],
+    ['知识库', 'Knowledge'],
     ['简单的工具，', 'Simple tools,'],
     ['专注解决问题。', 'focused on solving problems.'],
     ['一个独立部署的个人工作台。精确计算、代码处理、备忘录和服务器状态，都在同一个清晰、克制的界面中。', 'A self-hosted personal workspace for exact math, code utilities, notes, and server diagnostics—kept in one clear, focused interface.'],
@@ -23,6 +24,8 @@
     ['服务器测速', 'Server speed test'],
     ['测量当前浏览器到香港服务器的 HTTPS 延迟、抖动和页面加载阶段。', 'Measure HTTPS latency, jitter, and page-loading phases from this browser to the Hong Kong server.'],
     ['开始测速 →', 'Start test →'],
+    ['阅读后端、计算机系统与 AI 工程的中英文原创笔记。', 'Read original bilingual notes on backend engineering, computer systems, and AI.'],
+    ['开始阅读 →', 'Start reading →'],
     ['为清晰思考与日常工作而设计。', 'Designed for clarity and everyday work.'],
 
     ['工具集合 | Dezhonger', 'Tools | Dezhonger'],

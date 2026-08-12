@@ -2,12 +2,14 @@
 set -eu
 
 domain_certificate_path="/etc/letsencrypt/live/${PUBLIC_DOMAIN}/fullchain.pem"
+content_certificate_path="/etc/letsencrypt/live/${CONTENT_CERT_NAME}/fullchain.pem"
 ip_certificate_path="/etc/letsencrypt/live/${PUBLIC_IP}/fullchain.pem"
 runtime_config="/etc/nginx/runtime/site.conf"
+runtime_content_config="/etc/nginx/runtime/content.conf"
 runtime_ip_config="/etc/nginx/runtime/ip-redirect.conf"
 
 certificate_signature() {
-  for certificate_path in "$domain_certificate_path" "$ip_certificate_path"; do
+  for certificate_path in "$domain_certificate_path" "$content_certificate_path" "$ip_certificate_path"; do
     if [ -s "$certificate_path" ]; then
       sha256sum "$certificate_path" | cut -d ' ' -f 1
     else
@@ -18,6 +20,7 @@ certificate_signature() {
 
 render_site() {
   rm -f "$runtime_ip_config"
+  rm -f "$runtime_content_config"
 
   if [ -s "$domain_certificate_path" ]; then
     envsubst '${PUBLIC_DOMAIN}' \
@@ -35,6 +38,12 @@ render_site() {
       > "$runtime_config"
   else
     cp /etc/nginx/site-templates/site-http.conf.template "$runtime_config"
+  fi
+
+  if [ -s "$content_certificate_path" ]; then
+    envsubst '${PUBLIC_DOMAIN} ${CONTENT_CERT_NAME}' \
+      < /etc/nginx/site-templates/site-content-tls.conf.template \
+      > "$runtime_content_config"
   fi
 }
 

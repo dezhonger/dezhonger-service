@@ -512,8 +512,8 @@
       translateTextNode(node)
     }
     if (language === 'zh') {
-      document.querySelectorAll('a[href="/knowledge/"]').forEach((link) => {
-        link.setAttribute('href', '/knowledge/zh/')
+      document.querySelectorAll('a[href="https://knowledge.dezhonger.com/"]').forEach((link) => {
+        link.setAttribute('href', 'https://knowledge.dezhonger.com/zh/')
       })
     }
   }

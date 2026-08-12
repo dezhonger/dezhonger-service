@@ -11,6 +11,7 @@ COPY deploy/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/nginx/site-http.conf.template /etc/nginx/site-templates/site-http.conf.template
 COPY deploy/nginx/site-tls.conf.template /etc/nginx/site-templates/site-tls.conf.template
 COPY deploy/nginx/site-domain-tls.conf.template /etc/nginx/site-templates/site-domain-tls.conf.template
+COPY deploy/nginx/site-content-tls.conf.template /etc/nginx/site-templates/site-content-tls.conf.template
 COPY deploy/nginx/site-ip-redirect.conf.template /etc/nginx/site-templates/site-ip-redirect.conf.template
 COPY deploy/nginx/40-render-site.sh /docker-entrypoint.d/40-render-site.sh
 COPY --from=web-builder /src/web/dist/ /usr/share/nginx/html/

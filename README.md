@@ -69,7 +69,7 @@ cd ~/service
 cp .env.example .env
 ```
 
-在 `.env` 中设置公网 IP、HTTPS Origin 和随机数据库密码，然后启动：
+在 `.env` 中设置公网 IP、主域名、HTTPS Origin 和随机数据库密码，然后启动：
 
 ```bash
 docker compose up -d --build
@@ -85,11 +85,30 @@ docker compose run --rm -T api create-admin --username admin
 
 命令从标准输入读取一次临时密码。管理员首次登录后必须修改密码。
 
-## IP 地址 HTTPS
+## 域名 HTTPS
+
+将主域名和 `www` 的 DNS 解析指向服务器后，先用测试环境验证 HTTP-01：
+
+```bash
+set -a
+. ./.env
+set +a
+STAGING=1 ./scripts/issue-domain-certificate.sh
+```
+
+验证成功后申请正式证书：
+
+```bash
+./scripts/issue-domain-certificate.sh
+```
+
+证书出现后 Nginx 最迟五分钟内启用域名 HTTPS，也可以立即执行 `docker compose restart nginx`。主域名启用后，`www` 和已有的 IP HTTPS 入口都会跳转至主域名。
+
+## IP 地址 HTTPS（兼容入口）
 
 本项目使用 Certbot 5.7，并按 Let’s Encrypt 的要求为 IP 地址申请 `shortlived` 证书。证书有效期约六天，`certbot` 容器每六小时检查续期，Nginx 容器检测到证书变化后自动重新加载。
 
-先用测试环境验证 HTTP-01：
+如需在没有域名时单独申请 IP 证书，先用测试环境验证 HTTP-01：
 
 ```bash
 set -a

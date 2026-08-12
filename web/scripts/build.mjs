@@ -9,6 +9,7 @@ const output = resolve(root, 'dist')
 await rm(output, { force: true, recursive: true })
 await mkdir(output, { recursive: true })
 await cp(resolve(root, 'static'), output, { recursive: true })
+await cp(resolve(root, 'node_modules/mathjax'), resolve(output, 'vendor/mathjax'), { recursive: true })
 
 await build({
   entryPoints: [resolve(root, 'src/memo-app.mjs')],

@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "dompurify": "3.4.13",
-    "marked": "18.0.9"
+    "marked": "18.0.9",
+    "mathjax": "^4.0.0"
   },
   "devDependencies": {
     "esbuild": "0.28.2"

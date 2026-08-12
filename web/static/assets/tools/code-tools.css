@@ -90,6 +90,23 @@ body.tool-body {
   border-color: var(--tool-line);
 }
 
+.language-toggle {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--tool-line);
+  border-radius: 8px;
+  color: var(--tool-muted);
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.language-toggle:hover {
+  color: var(--tool-text);
+  background: var(--tool-chip);
+}
+
 .tool-hero,
 .tool-panel {
   margin-top: 14px;
@@ -456,6 +473,10 @@ body.tool-body {
   content: "编辑器加载失败，请刷新页面后重试";
   color: var(--tool-danger);
   background: #fff5f4;
+}
+
+html[lang="en"] .monaco-host.is-error::before {
+  content: "The editor failed to load. Refresh the page and try again.";
 }
 
 .diff-host {

@@ -5,6 +5,7 @@
   const X = root.ExactMatrix || (typeof require === 'function' ? require('./exact-matrix.js') : null)
   const E = root.ExactEquation || (typeof require === 'function' ? require('./equation-solver.js') : null)
   if (!M || !X || !E) throw new Error('精确矩阵依赖未加载')
+  const t = (english, chinese) => root.DezhongerI18n?.t(english, chinese) || english
   const {
     Rational,
     ZERO,
@@ -212,7 +213,7 @@
         const determinantValue = X.determinant(matrix)
         appendResult(output, '行列式与迹', `\\det(A)=${determinantValue.toLatex()},\\qquad \\operatorname{tr}(A)=${X.trace(matrix).toLatex()}`)
         if (!determinantValue.isZero()) appendResult(output, '逆矩阵', `A^{-1}=${matrixToLatex(X.inverse(matrix))}`)
-        else appendResult(output, '逆矩阵', 'A^{-1}\\text{ 不存在}', '行列式为 0，矩阵奇异。')
+        else appendResult(output, '逆矩阵', `A^{-1}\\text{${t(' does not exist', ' 不存在')}}`, '行列式为 0，矩阵奇异。')
         const eigen = eigenAnalysis(matrix)
         appendResult(output, '特征多项式', `\\chi_A(\\lambda)=\\det(\\lambda I-A)=${eigen.characteristic}`)
         appendResult(output, '特征值', eigen.equation.rootsLatex, eigen.equation.note)

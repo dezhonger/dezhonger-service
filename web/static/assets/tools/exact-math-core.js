@@ -270,7 +270,8 @@
 
   function setStatus(element, message, kind) {
     if (!element) return
-    element.textContent = message || ''
+    const localized = root.DezhongerI18n?.translateString(message) || message
+    element.textContent = localized || ''
     element.classList.remove('success', 'error', 'working')
     if (kind) element.classList.add(kind)
     element.hidden = !message
@@ -280,7 +281,7 @@
     const section = document.createElement('section')
     section.className = 'math-result-card'
     const heading = document.createElement('h3')
-    heading.textContent = title
+    heading.textContent = root.DezhongerI18n?.translateString(title) || title
     section.appendChild(heading)
     if (latex) {
       const output = document.createElement('div')
@@ -291,7 +292,7 @@
     if (note) {
       const paragraph = document.createElement('p')
       paragraph.className = 'math-result-note'
-      paragraph.textContent = note
+      paragraph.textContent = root.DezhongerI18n?.translateString(note) || note
       section.appendChild(paragraph)
     }
     container.appendChild(section)

@@ -140,6 +140,23 @@ textarea:focus-visible {
   min-width: 0;
 }
 
+.language-toggle {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--memo-line);
+  border-radius: 8px;
+  color: var(--memo-muted);
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.language-toggle:hover {
+  color: var(--memo-text);
+  background: var(--memo-surface-soft);
+}
+
 .memo-account-email {
   max-width: 260px;
   overflow: hidden;

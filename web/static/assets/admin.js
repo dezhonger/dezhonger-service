@@ -3,9 +3,11 @@ const message = document.querySelector('#admin-message')
 const createForm = document.querySelector('#create-user-form')
 const createSubmit = document.querySelector('#create-user-submit')
 let currentUser = null
+const t = (english, chinese) => window.DezhongerI18n?.t(english, chinese) || english
+const localize = (text) => window.DezhongerI18n?.translateString(text) || text
 
 function showMessage(text, tone = 'neutral') {
-  message.textContent = text
+  message.textContent = localize(text)
   message.dataset.tone = tone
   message.hidden = !text
 }
@@ -18,7 +20,7 @@ async function request(path, options = {}) {
   })
   const payload = response.status === 204 ? null : await response.json().catch(() => null)
   if (!response.ok) {
-    const error = new Error(payload?.message || `请求失败（HTTP ${response.status}）`)
+    const error = new Error(payload?.message || t(`Request failed (HTTP ${response.status})`, `请求失败（HTTP ${response.status}）`))
     error.code = payload?.code
     error.status = response.status
     throw error
@@ -36,7 +38,7 @@ function field(labelText, control) {
 function renderUsers(users) {
   list.replaceChildren()
   if (!users.length) {
-    list.textContent = '暂无用户。'
+    list.textContent = t('No users yet.', '暂无用户。')
     return
   }
 
@@ -50,11 +52,13 @@ function renderUsers(users) {
     const name = document.createElement('strong')
     name.textContent = user.username
     const meta = document.createElement('small')
-    meta.textContent = user.must_change_password ? '等待修改临时密码' : '密码已由用户设置'
+    meta.textContent = user.must_change_password
+      ? t('Waiting for temporary password change', '等待修改临时密码')
+      : t('Password set by user', '密码已由用户设置')
     identity.append(name, meta)
 
     const role = document.createElement('select')
-    role.innerHTML = '<option value="user">普通用户</option><option value="admin">管理员</option>'
+    role.innerHTML = `<option value="user">${t('User', '普通用户')}</option><option value="admin">${t('Administrator', '管理员')}</option>`
     role.value = user.role
 
     const activeLabel = document.createElement('label')
@@ -62,27 +66,27 @@ function renderUsers(users) {
     const active = document.createElement('input')
     active.type = 'checkbox'
     active.checked = user.is_active
-    activeLabel.append(active, '账号启用')
+    activeLabel.append(active, t('Account enabled', '账号启用'))
 
     const password = document.createElement('input')
     password.type = 'password'
     password.minLength = 12
     password.maxLength = 72
-    password.placeholder = '留空则不重置'
+    password.placeholder = t('Leave blank to keep current password', '留空则不重置')
     password.autocomplete = 'new-password'
 
     const save = document.createElement('button')
     save.className = 'button primary'
     save.type = 'submit'
-    save.textContent = '保存'
+    save.textContent = t('Save', '保存')
 
     if (user.id === currentUser.id) {
       role.disabled = true
       active.disabled = true
-      meta.textContent += ' · 当前账号'
+      meta.textContent += t(' · Current account', ' · 当前账号')
     }
 
-    row.append(identity, field('角色', role), activeLabel, field('新临时密码', password), save)
+    row.append(identity, field(t('Role', '角色'), role), activeLabel, field(t('New temporary password', '新临时密码'), password), save)
     row.addEventListener('submit', async (event) => {
       event.preventDefault()
       save.disabled = true
@@ -94,7 +98,7 @@ function renderUsers(users) {
           body: JSON.stringify(body),
         })
         password.value = ''
-        showMessage(`已更新用户 ${user.username}。`, 'success')
+        showMessage(t(`Updated user ${user.username}.`, `已更新用户 ${user.username}。`), 'success')
         await loadUsers()
       } catch (error) {
         showMessage(error.message, 'danger')
@@ -107,7 +111,7 @@ function renderUsers(users) {
 }
 
 async function loadUsers() {
-  list.textContent = '正在加载…'
+  list.textContent = t('Loading…', '正在加载…')
   try {
     const { users } = await request('/api/admin/users')
     renderUsers(users)
@@ -130,10 +134,10 @@ createForm.addEventListener('submit', async (event) => {
       }),
     })
     createForm.reset()
-    showMessage('用户已创建。', 'success')
+    showMessage(t('User created.', '用户已创建。'), 'success')
     await loadUsers()
   } catch (error) {
-    showMessage(error.code === 'username_exists' ? '该用户名已经存在。' : error.message, 'danger')
+    showMessage(error.code === 'username_exists' ? t('That username already exists.', '该用户名已经存在。') : error.message, 'danger')
   } finally {
     createSubmit.disabled = false
   }
@@ -156,7 +160,7 @@ async function bootstrap() {
     await loadUsers()
   } catch (error) {
     if (error.status === 401) window.location.replace('/memo/')
-    else showMessage('无法初始化管理页面。', 'danger')
+    else showMessage(t('Unable to initialize the administration page.', '无法初始化管理页面。'), 'danger')
   }
 }
 

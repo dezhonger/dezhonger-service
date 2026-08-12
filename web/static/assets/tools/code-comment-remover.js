@@ -1,5 +1,6 @@
 (function () {
   const toolkit = window.CodeCommentToolkit
+  const t = (english, chinese) => window.DezhongerI18n?.t(english, chinese) || english
 
   if (!toolkit) {
     return
@@ -10,34 +11,34 @@
       label: 'C / C++ / Java / JS / TS',
       desc: `
         <ul>
-          <li>支持 <code>//</code> 和 <code>/* ... */</code></li>
-          <li>“删除由注释产生的空行”只会删真正的注释行，不会删你原来写的空行</li>
+          <li>${t('Supports <code>//</code> and <code>/* ... */</code>', '支持 <code>//</code> 和 <code>/* ... */</code>')}</li>
+          <li>${t('“Remove lines emptied by comments” only removes actual comment lines, not blank lines already present in your code.', '“删除由注释产生的空行”只会删真正的注释行，不会删你原来写的空行')}</li>
         </ul>
       `,
     },
     golang: {
       label: 'Go (golang)',
-      desc: `<ul><li>同 C 风格：<code>//</code> + <code>/* ... */</code></li></ul>`,
+      desc: `<ul><li>${t('C-style: <code>//</code> + <code>/* ... */</code>', '同 C 风格：<code>//</code> + <code>/* ... */</code>')}</li></ul>`,
     },
     csharp: {
       label: 'C#',
-      desc: `<ul><li>同 C 风格；<code>///</code> 也当行注释看</li></ul>`,
+      desc: `<ul><li>${t('C-style; <code>///</code> is also treated as a line comment', '同 C 风格；<code>///</code> 也当行注释看')}</li></ul>`,
     },
     python: {
       label: 'Python',
-      desc: `<ul><li>支持 <code># ...</code> 和三引号字符串</li></ul>`,
+      desc: `<ul><li>${t('Supports <code># ...</code> and triple-quoted strings', '支持 <code># ...</code> 和三引号字符串')}</li></ul>`,
     },
     shell: {
       label: 'Shell / Bash',
-      desc: `<ul><li>支持 <code># ...</code></li></ul>`,
+      desc: `<ul><li>${t('Supports <code># ...</code>', '支持 <code># ...</code>')}</li></ul>`,
     },
     sql: {
-      label: 'SQL / Hive / 方言 SQL',
-      desc: `<ul><li>支持 <code>-- ...</code>、<code>/* ... */</code>、<code># ...</code></li></ul>`,
+      label: t('SQL / Hive / SQL dialects', 'SQL / Hive / 方言 SQL'),
+      desc: `<ul><li>${t('Supports <code>-- ...</code>, <code>/* ... */</code>, and <code># ...</code>', '支持 <code>-- ...</code>、<code>/* ... */</code>、<code># ...</code>')}</li></ul>`,
     },
     html: {
       label: 'HTML / XML',
-      desc: `<ul><li>支持 <code>&lt;!-- ... --&gt;</code></li></ul>`,
+      desc: `<ul><li>${t('Supports <code>&lt;!-- ... --&gt;</code>', '支持 <code>&lt;!-- ... --&gt;</code>')}</li></ul>`,
     },
   }
 
@@ -225,7 +226,7 @@
     navigator.clipboard
       .writeText(text)
       .then(function () {
-        setStatus('success', '复制成功')
+        setStatus('success', t('Copied', '复制成功'))
         if (state.copiedTimer) {
           window.clearTimeout(state.copiedTimer)
         }
@@ -235,7 +236,7 @@
         openDiffPreview()
       })
       .catch(function () {
-        setStatus('error', '复制失败，请手动复制')
+        setStatus('error', t('Copy failed. Copy the text manually.', '复制失败，请手动复制'))
       })
   }
 
@@ -309,7 +310,7 @@
           host.classList.add('is-error')
           host.setAttribute('aria-busy', 'false')
         })
-        setStatus('error', 'Monaco 加载失败，请刷新页面后重试')
+        setStatus('error', t('Monaco failed to load. Refresh the page and try again.', 'Monaco 加载失败，请刷新页面后重试'))
       },
     )
   }

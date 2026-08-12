@@ -17,6 +17,10 @@ import {
   sortNotes,
 } from './memo-core.mjs'
 
+const i18n = window.DezhongerI18n
+const t = (english, chinese) => i18n?.t(english, chinese) || english
+const localize = (message) => i18n?.translateString(message) || message
+
 const DATABASE_NAME = 'dezhonger-memo'
 const DATABASE_VERSION = 1
 const RECORD_STORE = 'records'
@@ -24,11 +28,11 @@ const STORAGE_PREFIX = 'dz-memo'
 const AUTOSAVE_DELAY_MS = 650
 const REMOTE_REFRESH_INTERVAL_MS = 15_000
 const STATUS_LABELS = Object.freeze({
-  inbox: '收件箱',
-  todo: '待处理',
-  doing: '进行中',
-  done: '已完成',
-  archived: '已归档',
+  inbox: t('Inbox', '收件箱'),
+  todo: t('To do', '待处理'),
+  doing: t('In progress', '进行中'),
+  done: t('Done', '已完成'),
+  archived: t('Archived', '已归档'),
 })
 
 const elements = {
@@ -135,7 +139,7 @@ async function apiFetch(path, options = {}) {
   }
   if (!response.ok) {
     const error = new APIError(
-      payload?.message || `请求失败（HTTP ${response.status}）`,
+      payload?.message || t(`Request failed (HTTP ${response.status})`, `请求失败（HTTP ${response.status}）`),
       payload?.code || 'request_failed',
       response.status,
     )
@@ -159,14 +163,14 @@ function setVisibleView(view) {
 }
 
 function setAuthMessage(message, tone = 'neutral') {
-  elements.authMessage.textContent = message
+  elements.authMessage.textContent = localize(message)
   elements.authMessage.dataset.tone = tone
   elements.authMessage.hidden = !message
 }
 
 function showToast(message, tone = 'neutral') {
   window.clearTimeout(state.toastTimer)
-  elements.toast.textContent = message
+  elements.toast.textContent = localize(message)
   elements.toast.dataset.tone = tone
   elements.toast.hidden = false
   state.toastTimer = window.setTimeout(() => {
@@ -319,6 +323,11 @@ function activeNote() {
   return state.notes.find((note) => note.id === state.activeId) || null
 }
 
+function displayNoteTitle(note) {
+  const title = noteTitle(note)
+  return title === '无标题备忘录' ? t('Untitled memo', '无标题备忘录') : title
+}
+
 function replaceNote(nextNote) {
   const index = state.notes.findIndex((note) => note.id === nextNote.id)
   if (index === -1) state.notes.push(nextNote)
@@ -328,9 +337,9 @@ function replaceNote(nextNote) {
 
 function formatUpdatedAt(value) {
   const date = new Date(value)
-  if (Number.isNaN(date.valueOf())) return '尚未同步'
+  if (Number.isNaN(date.valueOf())) return t('Not synced yet', '尚未同步')
 
-  return new Intl.DateTimeFormat('zh-CN', {
+  return new Intl.DateTimeFormat(i18n?.language === 'zh' ? 'zh-CN' : 'en-US', {
     month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
@@ -341,7 +350,7 @@ function formatUpdatedAt(value) {
 
 function updateConnectionStatus() {
   const online = window.navigator.onLine
-  elements.onlineStatus.textContent = online ? '在线' : '离线'
+  elements.onlineStatus.textContent = online ? t('Online', '在线') : t('Offline', '离线')
   elements.onlineStatus.dataset.online = online ? 'true' : 'false'
   elements.syncNow.disabled = !online || state.flushInProgress
 }
@@ -349,18 +358,20 @@ function updateConnectionStatus() {
 function updateSyncStatus(message = '') {
   const pendingCount = state.pending.length
   elements.pendingBadge.hidden = pendingCount === 0
-  elements.pendingBadge.textContent = `${pendingCount} 项待同步`
+  elements.pendingBadge.textContent = t(`${pendingCount} pending`, `${pendingCount} 项待同步`)
 
   if (message) {
-    elements.syncStatus.textContent = message
+    elements.syncStatus.textContent = localize(message)
   } else if (state.flushInProgress) {
-    elements.syncStatus.textContent = '正在同步…'
+    elements.syncStatus.textContent = t('Syncing…', '正在同步…')
   } else if (!window.navigator.onLine) {
-    elements.syncStatus.textContent = pendingCount ? `离线保存 · ${pendingCount} 项待同步` : '离线缓存可用'
+    elements.syncStatus.textContent = pendingCount
+      ? t(`Saved offline · ${pendingCount} pending`, `离线保存 · ${pendingCount} 项待同步`)
+      : t('Offline cache available', '离线缓存可用')
   } else if (pendingCount) {
-    elements.syncStatus.textContent = `${pendingCount} 项等待同步`
+    elements.syncStatus.textContent = t(`${pendingCount} waiting to sync`, `${pendingCount} 项等待同步`)
   } else {
-    elements.syncStatus.textContent = '已同步'
+    elements.syncStatus.textContent = t('Synced', '已同步')
   }
 
   updateConnectionStatus()
@@ -375,7 +386,7 @@ function renderFilters() {
   }
 
   const categoryOptions = [
-    { value: '', label: '全部分类' },
+    { value: '', label: t('All categories', '全部分类') },
     ...categories.map((category) => ({ value: category, label: category })),
   ]
   elements.categoryFilter.replaceChildren(
@@ -407,7 +418,7 @@ function renderFilters() {
     button.type = 'button'
     button.className = 'memo-tag-filter'
     button.dataset.tag = tag
-    button.textContent = tag || '全部标签'
+    button.textContent = tag || t('All tags', '全部标签')
     button.setAttribute('aria-pressed', tag === state.selectedTag ? 'true' : 'false')
     elements.tagFilters.append(button)
   }
@@ -431,7 +442,9 @@ function renderNoteList() {
   if (visibleNotes.length === 0) {
     const empty = document.createElement('li')
     empty.className = 'memo-list-empty'
-    empty.textContent = filterActive ? '没有匹配的备忘录' : '还没有备忘录'
+    empty.textContent = filterActive
+      ? t('No matching memos', '没有匹配的备忘录')
+      : t('No memos yet', '还没有备忘录')
     elements.noteList.append(empty)
     return
   }
@@ -451,10 +464,10 @@ function renderNoteList() {
     button.setAttribute('aria-current', note.id === state.activeId ? 'true' : 'false')
 
     heading.className = 'memo-list-title'
-    heading.textContent = `${note.is_pinned ? '置顶 · ' : ''}${noteTitle(note)}`
+    heading.textContent = `${note.is_pinned ? t('Pinned · ', '置顶 · ') : ''}${displayNoteTitle(note)}`
 
     excerpt.className = 'memo-list-excerpt'
-    excerpt.textContent = note.content.replace(/\s+/g, ' ').trim() || '暂无正文'
+    excerpt.textContent = note.content.replace(/\s+/g, ' ').trim() || t('No content', '暂无正文')
 
     tags.className = 'memo-list-tags'
     for (const tag of note.tags.slice(0, 3)) {
@@ -472,9 +485,9 @@ function renderNoteList() {
     meta.className = 'memo-list-meta'
     meta.textContent = [
       STATUS_LABELS[normalizeStatus(note.status)],
-      normalizeCategory(note.category) || '未分类',
+      normalizeCategory(note.category) || t('Uncategorized', '未分类'),
       formatUpdatedAt(note.updated_at),
-      pendingIds.has(note.id) ? '待同步' : '',
+      pendingIds.has(note.id) ? t('Pending', '待同步') : '',
     ].filter(Boolean).join(' · ')
 
     button.append(heading, excerpt, tags, meta)
@@ -492,7 +505,7 @@ function renderPreview() {
 
   const source = note.content.trim()
   if (!source) {
-    elements.preview.innerHTML = '<p class="memo-preview-placeholder">在编辑区输入 Markdown 后，这里会显示预览。</p>'
+    elements.preview.innerHTML = `<p class="memo-preview-placeholder">${t('Enter Markdown in the editor to preview it here.', '在编辑区输入 Markdown 后，这里会显示预览。')}</p>`
     return
   }
 
@@ -526,8 +539,8 @@ function renderEditor() {
     input.value = value
   }
   state.renderedNoteId = note.id
-  elements.updatedAt.textContent = `更新于 ${formatUpdatedAt(note.updated_at)}`
-  elements.pinNote.textContent = note.is_pinned ? '取消置顶' : '置顶'
+  elements.updatedAt.textContent = t(`Updated ${formatUpdatedAt(note.updated_at)}`, `更新于 ${formatUpdatedAt(note.updated_at)}`)
+  elements.pinNote.textContent = note.is_pinned ? t('Unpin', '取消置顶') : t('Pin', '置顶')
   elements.pinNote.setAttribute('aria-pressed', note.is_pinned ? 'true' : 'false')
   elements.editMode.setAttribute('aria-pressed', state.mode === 'edit' ? 'true' : 'false')
   elements.previewMode.setAttribute('aria-pressed', state.mode === 'preview' ? 'true' : 'false')
@@ -816,7 +829,7 @@ async function activateUser(user) {
     return
   }
 
-  elements.accountEmail.textContent = state.user.username || '已登录'
+  elements.accountEmail.textContent = state.user.username || t('Signed in', '已登录')
   elements.accountEmail.hidden = false
   elements.adminLink.hidden = state.user.role !== 'admin'
   elements.databaseLink.hidden = state.user.role !== 'admin'
@@ -852,7 +865,10 @@ async function selectNote(noteId) {
 async function deleteActiveNote() {
   const note = activeNote()
   if (!note) return
-  const confirmed = window.confirm(`确定删除“${noteTitle(note)}”吗？此操作会同步到其他浏览器。`)
+  const confirmed = window.confirm(t(
+    `Delete “${displayNoteTitle(note)}”? This change will sync to other browsers.`,
+    `确定删除“${displayNoteTitle(note)}”吗？此操作会同步到其他浏览器。`,
+  ))
   if (!confirmed) return
 
   window.clearTimeout(state.autosaveTimer)

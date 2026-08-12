@@ -1,6 +1,7 @@
 const runButton = document.querySelector('#run-speed-test')
 const message = document.querySelector('#speed-message')
 const chart = document.querySelector('#speed-chart')
+const t = (english, chinese) => window.DezhongerI18n?.t(english, chinese) || english
 
 function setText(id, value) {
   document.querySelector(id).textContent = value
@@ -15,10 +16,10 @@ function percentile(sorted, ratio) {
 }
 
 function latencyGrade(value) {
-  if (value < 80) return '连接优秀，交互响应会很流畅。'
-  if (value < 150) return '连接良好，适合日常使用。'
-  if (value < 300) return '延迟一般，部分操作可能有可感知等待。'
-  return '延迟较高，请检查本地网络或代理线路。'
+  if (value < 80) return t('Excellent connection. Interactions should feel immediate.', '连接优秀，交互响应会很流畅。')
+  if (value < 150) return t('Good connection for everyday use.', '连接良好，适合日常使用。')
+  if (value < 300) return t('Moderate latency. Some actions may have a noticeable delay.', '延迟一般，部分操作可能有可感知等待。')
+  return t('High latency. Check your local network or proxy route.', '延迟较高，请检查本地网络或代理线路。')
 }
 
 function drawChart(samples) {
@@ -60,7 +61,7 @@ function drawChart(samples) {
 
 async function runSpeedTest() {
   runButton.disabled = true
-  runButton.textContent = '测速中…'
+  runButton.textContent = t('Testing…', '测速中…')
   message.hidden = true
   const samples = []
   let failed = 0
@@ -84,10 +85,10 @@ async function runSpeedTest() {
   }
 
   if (!samples.length) {
-    message.textContent = '测速请求全部失败，请刷新页面或检查网络后重试。'
+    message.textContent = t('All test requests failed. Refresh the page or check your network and try again.', '测速请求全部失败，请刷新页面或检查网络后重试。')
     message.dataset.tone = 'danger'
     message.hidden = false
-    setText('#latency-grade', '暂时无法连接服务器')
+    setText('#latency-grade', t('The server is temporarily unreachable.', '暂时无法连接服务器'))
   } else {
     const sorted = [...samples].sort((left, right) => left - right)
     const average = samples.reduce((sum, value) => sum + value, 0) / samples.length
@@ -103,7 +104,7 @@ async function runSpeedTest() {
     setText('#metric-region', region.replace('Tencent Cloud · ', ''))
     window.lastSpeedSamples = samples
     if (failed) {
-      message.textContent = `${failed} 次请求失败，结果仅基于成功样本。`
+      message.textContent = t(`${failed} requests failed; results use successful samples only.`, `${failed} 次请求失败，结果仅基于成功样本。`)
       message.dataset.tone = 'danger'
       message.hidden = false
     }
@@ -111,7 +112,7 @@ async function runSpeedTest() {
   }
 
   runButton.disabled = false
-  runButton.textContent = '重新测速'
+  runButton.textContent = t('Run again', '重新测速')
 }
 
 function renderNavigationTiming() {
@@ -125,7 +126,7 @@ function renderNavigationTiming() {
   setText('#nav-tls', milliseconds(Math.max(0, tls)))
   setText('#nav-ttfb', milliseconds(Math.max(0, entry.responseStart - entry.requestStart)))
   setText('#nav-total', milliseconds(total))
-  setText('#navigation-total', `页面总耗时 ${milliseconds(total)}`)
+  setText('#navigation-total', t(`Total page time ${milliseconds(total)}`, `页面总耗时 ${milliseconds(total)}`))
 }
 
 runButton.addEventListener('click', runSpeedTest)

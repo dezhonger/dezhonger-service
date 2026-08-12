@@ -7,6 +7,8 @@ const message = document.querySelector('#db-message')
 const pagination = document.querySelector('#db-pagination')
 const dataTab = document.querySelector('#db-data-tab')
 const structureTab = document.querySelector('#db-structure-tab')
+const t = (english, chinese) => window.DezhongerI18n?.t(english, chinese) || english
+const localize = (text) => window.DezhongerI18n?.translateString(text) || text
 const pageSize = 25
 let tables = []
 let selectedTable = ''
@@ -18,7 +20,7 @@ async function request(path) {
   const response = await fetch(path, { credentials: 'same-origin', headers: { Accept: 'application/json' } })
   const payload = await response.json().catch(() => null)
   if (!response.ok) {
-    const error = new Error(payload?.message || `请求失败（HTTP ${response.status}）`)
+    const error = new Error(payload?.message || t(`Request failed (HTTP ${response.status})`, `请求失败（HTTP ${response.status}）`))
     error.status = response.status
     error.code = payload?.code
     throw error
@@ -27,7 +29,7 @@ async function request(path) {
 }
 
 function showMessage(text, tone = 'neutral') {
-  message.textContent = text
+  message.textContent = localize(text)
   message.dataset.tone = tone
   message.hidden = !text
 }
@@ -71,7 +73,7 @@ function renderData() {
     const row = document.createElement('tr')
     const cell = document.createElement('td')
     cell.colSpan = Math.max(tableData.columns.length, 1)
-    cell.textContent = '当前页没有数据。'
+    cell.textContent = t('No rows on this page.', '当前页没有数据。')
     row.append(cell)
     body.append(row)
   } else {
@@ -101,7 +103,13 @@ function renderStructure() {
   table.className = 'db-data-table'
   const head = document.createElement('thead')
   const headRow = document.createElement('tr')
-  ;['字段', '类型', '可空', '默认值', '保护'].forEach(label => {
+  ;[
+    t('Column', '字段'),
+    t('Type', '类型'),
+    t('Nullable', '可空'),
+    t('Default', '默认值'),
+    t('Protection', '保护'),
+  ].forEach(label => {
     const cell = document.createElement('th')
     cell.textContent = label
     headRow.append(cell)
@@ -123,7 +131,7 @@ function renderStructure() {
     appendCell(row, column.data_type === 'ARRAY' ? column.udt_name : column.data_type)
     appendCell(row, column.nullable ? 'YES' : 'NO')
     appendCell(row, column.default)
-    appendCell(row, column.sensitive ? '值已隐藏' : '—', column.sensitive)
+    appendCell(row, column.sensitive ? t('Value hidden', '值已隐藏') : '—', column.sensitive)
     body.append(row)
   })
   table.append(body)
@@ -159,11 +167,14 @@ function renderTableList() {
 async function loadTable() {
   if (!selectedTable) return
   showMessage('')
-  output.textContent = '正在读取表…'
+  output.textContent = t('Reading table…', '正在读取表…')
   try {
     tableData = await request(`/api/admin/database/tables/${encodeURIComponent(selectedTable)}?limit=${pageSize}&offset=${offset}`)
     document.querySelector('#db-title').textContent = tableData.table
-    document.querySelector('#db-subtitle').textContent = `${tableData.columns.length} 个字段 · ${tableData.total} 行 · 只读`
+    document.querySelector('#db-subtitle').textContent = t(
+      `${tableData.columns.length} columns · ${tableData.total} rows · read-only`,
+      `${tableData.columns.length} 个字段 · ${tableData.total} 行 · 只读`,
+    )
     renderCurrentView()
   } catch (error) {
     output.textContent = ''
@@ -188,7 +199,7 @@ async function bootstrap() {
     if (user.role !== 'admin') return window.location.replace('/memo/')
     const payload = await request('/api/admin/database/tables')
     tables = payload.tables
-    tableCount.textContent = `${tables.length} 张表`
+    tableCount.textContent = t(`${tables.length} tables`, `${tables.length} 张表`)
     renderTableList()
     if (tables.length) await selectTable(tables[0].name)
   } catch (error) {

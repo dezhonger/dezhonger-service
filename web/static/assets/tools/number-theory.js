@@ -3,6 +3,7 @@
 
   const M = root.ExactMath || (typeof require === 'function' ? require('./exact-math-core.js') : null)
   if (!M) throw new Error('ExactMath 未加载')
+  const t = (english, chinese) => root.DezhongerI18n?.t(english, chinese) || english
   const { absBigInt, gcdBigInt, extendedGcd, parseInteger, appendResult, setStatus, typeset } = M
   const TWO_TO_64 = 18446744073709551616n
   const DETERMINISTIC_BASES_64 = [2n, 325n, 9375n, 28178n, 450775n, 9780504n, 1795265022n]
@@ -343,7 +344,7 @@
     const section = document.createElement('section')
     section.className = 'math-result-card math-result-wide'
     const heading = document.createElement('h3')
-    heading.textContent = '质因数分解'
+    heading.textContent = t('Prime factorization', '质因数分解')
     const equation = document.createElement('div')
     equation.className = 'factor-equation'
     const source = document.createElement('span')
@@ -377,7 +378,7 @@
       }
       if (factor.unresolved) {
         const note = document.createElement('small')
-        note.textContent = '未分解余因子'
+        note.textContent = t('Unresolved cofactor', '未分解余因子')
         term.append(note)
       }
       list.append(term)
@@ -394,11 +395,11 @@
       const result = primality(n)
       if (!result.prime) {
         const detail = result.divisor ? `可被 ${result.divisor} 整除。` : result.witness ? `底数 ${result.witness} 给出了合数见证。` : result.reason
-        appendResult(integerOutput, '判定结果', `${n}\\text{ 是合数}`, detail)
+        appendResult(integerOutput, '判定结果', `${n}\\text{${t(' is composite', ' 是合数')}}`, detail)
       } else if (result.proven) {
-        appendResult(integerOutput, '判定结果', `${n}\\text{ 是质数}`, '在 n < 2^64 范围内使用确定性 Miller–Rabin 基底集合，结论为确定性。')
+        appendResult(integerOutput, '判定结果', `${n}\\text{${t(' is prime', ' 是质数')}}`, '在 n < 2^64 范围内使用确定性 Miller–Rabin 基底集合，结论为确定性。')
       } else {
-        appendResult(integerOutput, '判定结果', `${n}\\text{ 是强可能质数}`, `已通过 ${result.rounds} 个基底的强伪素数检验。由于 n ≥ 2^64，页面不会把概率性结果伪装成严格素性证明。`)
+        appendResult(integerOutput, '判定结果', `${n}\\text{${t(' is a strong probable prime', ' 是强可能质数')}}`, `已通过 ${result.rounds} 个基底的强伪素数检验。由于 n ≥ 2^64，页面不会把概率性结果伪装成严格素性证明。`)
       }
       typeset([integerOutput])
     } catch (error) {

@@ -1,5 +1,6 @@
 (function () {
   const toolkit = window.CodeCommentToolkit
+  const t = (english, chinese) => window.DezhongerI18n?.t(english, chinese) || english
 
   if (!toolkit) {
     return
@@ -172,7 +173,7 @@
     if (!refs.diffEditor) return
     if (shouldEnableVisibilityFallback()) {
       refs.diffEditor.classList.add('monaco-visibility-fallback')
-      setStatus('error', '检测到浏览器渲染冲突，已启用可见性兼容模式')
+      setStatus('error', t('A browser rendering conflict was detected; visibility compatibility mode is active.', '检测到浏览器渲染冲突，已启用可见性兼容模式'))
       return
     }
     refs.diffEditor.classList.remove('monaco-visibility-fallback')
@@ -192,21 +193,21 @@
   function fillExample() {
     if (!state.originalModel || !state.modifiedModel) return
     const left = [
-      '解答算法题:',
+      t('Solve the algorithm problem:', '解答算法题:'),
       'Input',
-      '第一行包含一个整数 n。',
-      '第二行包含 n 个整数 a[i]。',
+      t('The first line contains an integer n.', '第一行包含一个整数 n。'),
+      t('The second line contains n integers a[i].', '第二行包含 n 个整数 a[i]。'),
       '',
-      '输出所有数的和。',
+      t('Output the sum of all numbers.', '输出所有数的和。'),
     ].join('\n')
 
     const right = [
-      '解答算法题:',
+      t('Solve the algorithm problem:', '解答算法题:'),
       'Input',
-      '第一行包含一个整数 n (1 ≤ n ≤ 2e5)。',
-      '第二行包含 n 个整数 a[i]。',
+      t('The first line contains an integer n (1 ≤ n ≤ 2e5).', '第一行包含一个整数 n (1 ≤ n ≤ 2e5)。'),
+      t('The second line contains n integers a[i].', '第二行包含 n 个整数 a[i]。'),
       '',
-      '请输出所有数的和（使用 64 位整数类型）。',
+      t('Output the sum of all numbers using a 64-bit integer type.', '请输出所有数的和（使用 64 位整数类型）。'),
     ].join('\n')
 
     state.originalModel.setValue(left)
@@ -244,7 +245,7 @@
     navigator.clipboard
       .writeText(text)
       .then(function () {
-        setStatus('success', '已复制右侧文本')
+        setStatus('success', t('Copied the right-side text', '已复制右侧文本'))
         if (state.timer) {
           window.clearTimeout(state.timer)
         }
@@ -253,7 +254,7 @@
         }, 2000)
       })
       .catch(function () {
-        setStatus('error', '复制失败，请手动复制')
+        setStatus('error', t('Copy failed. Copy the text manually.', '复制失败，请手动复制'))
       })
   }
 
@@ -273,7 +274,7 @@
   }
 
   toolkit.loadMonaco([], initDiffEditor, function () {
-    setStatus('error', 'Monaco 加载失败，请刷新页面后重试')
+    setStatus('error', t('Monaco failed to load. Refresh the page and try again.', 'Monaco 加载失败，请刷新页面后重试'))
   })
   bindEvents()
 })()

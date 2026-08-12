@@ -104,6 +104,8 @@ STAGING=1 ./scripts/issue-domain-certificate.sh
 
 证书出现后 Nginx 最迟五分钟内启用域名 HTTPS，也可以立即执行 `docker compose restart nginx`。主域名启用后，`www` 和已有的 IP HTTPS 入口都会跳转至主域名。
 
+内容站点共用 `dezhonger-content` 证书。`scripts/issue-content-certificate.sh` 会在保留已有内容域名的同时，把数学、算法、古文以及英语、生物、地理、物理、化学、历史等子域名加入同一张证书；Certbot 容器继续负责自动续期。
+
 ## IP 地址 HTTPS（兼容入口）
 
 本项目使用 Certbot 5.7，并按 Let’s Encrypt 的要求为 IP 地址申请 `shortlived` 证书。证书有效期约六天，`certbot` 容器每六小时检查续期，Nginx 容器检测到证书变化后自动重新加载。

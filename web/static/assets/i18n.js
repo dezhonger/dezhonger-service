@@ -440,6 +440,15 @@
   ]
 
   function storedLanguage() {
+    const requested = new URLSearchParams(root.location.search).get('lang')
+    if (requested === 'en' || requested === 'zh') {
+      try {
+        root.localStorage.setItem(storageKey, requested)
+      } catch {
+        // The requested language still applies to the current page.
+      }
+      return requested
+    }
     try {
       return root.localStorage.getItem(storageKey) === 'zh' ? 'zh' : 'en'
     } catch {
@@ -501,6 +510,11 @@
     while ((node = walker.nextNode())) {
       if (node.parentElement?.closest('script, style, textarea, code, pre, [data-i18n-ignore]')) continue
       translateTextNode(node)
+    }
+    if (language === 'zh') {
+      document.querySelectorAll('a[href="/knowledge/"]').forEach((link) => {
+        link.setAttribute('href', '/knowledge/zh/')
+      })
     }
   }
 

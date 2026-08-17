@@ -36,4 +36,5 @@ docker compose run --rm --entrypoint certbot certbot certonly \
   -d "physics.$PUBLIC_DOMAIN" \
   -d "chemistry.$PUBLIC_DOMAIN" \
   -d "history.$PUBLIC_DOMAIN" \
+  -d "puzzle.$PUBLIC_DOMAIN" \
   $staging_flag

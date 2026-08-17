@@ -104,7 +104,7 @@ STAGING=1 ./scripts/issue-domain-certificate.sh
 
 证书出现后 Nginx 最迟五分钟内启用域名 HTTPS，也可以立即执行 `docker compose restart nginx`。主域名启用后，`www` 和已有的 IP HTTPS 入口都会跳转至主域名。
 
-内容站点共用 `dezhonger-content` 证书。`scripts/issue-content-certificate.sh` 会在保留已有内容域名的同时，把数学、算法、古文以及英语、生物、地理、物理、化学、历史等子域名加入同一张证书；Certbot 容器继续负责自动续期。
+内容站点共用 `dezhonger-content` 证书。`scripts/issue-content-certificate.sh` 会在保留已有内容域名的同时，把 Puzzle、数学、算法、古文以及英语、生物、地理、物理、化学、历史等子域名加入同一张证书；Certbot 容器继续负责自动续期。
 
 ## IP 地址 HTTPS（兼容入口）
 

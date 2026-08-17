@@ -4,7 +4,8 @@ server {
   server_name knowledge.${PUBLIC_DOMAIN} docs.${PUBLIC_DOMAIN} guwen.${PUBLIC_DOMAIN}
               zmq.${PUBLIC_DOMAIN} rby.${PUBLIC_DOMAIN} math.${PUBLIC_DOMAIN} algo.${PUBLIC_DOMAIN}
               english.${PUBLIC_DOMAIN} biology.${PUBLIC_DOMAIN} geography.${PUBLIC_DOMAIN}
-              physics.${PUBLIC_DOMAIN} chemistry.${PUBLIC_DOMAIN} history.${PUBLIC_DOMAIN};
+              physics.${PUBLIC_DOMAIN} chemistry.${PUBLIC_DOMAIN} history.${PUBLIC_DOMAIN}
+              puzzle.${PUBLIC_DOMAIN};
 
   location ^~ /.well-known/acme-challenge/ {
     root /var/www/certbot;
@@ -36,7 +37,8 @@ server {
   server_name knowledge.${PUBLIC_DOMAIN} guwen.${PUBLIC_DOMAIN} zmq.${PUBLIC_DOMAIN}
               rby.${PUBLIC_DOMAIN} math.${PUBLIC_DOMAIN} algo.${PUBLIC_DOMAIN}
               english.${PUBLIC_DOMAIN} biology.${PUBLIC_DOMAIN} geography.${PUBLIC_DOMAIN}
-              physics.${PUBLIC_DOMAIN} chemistry.${PUBLIC_DOMAIN} history.${PUBLIC_DOMAIN};
+              physics.${PUBLIC_DOMAIN} chemistry.${PUBLIC_DOMAIN} history.${PUBLIC_DOMAIN}
+              puzzle.${PUBLIC_DOMAIN};
 
   ssl_certificate /etc/letsencrypt/live/${CONTENT_CERT_NAME}/fullchain.pem;
   ssl_certificate_key /etc/letsencrypt/live/${CONTENT_CERT_NAME}/privkey.pem;

@@ -4,12 +4,14 @@ WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /out/api ./cmd/api
+RUN CGO_ENABLED=0 GOOS=linux go build -p 2 -trimpath -ldflags="-s -w" -o /out/api ./cmd/api
 
 FROM alpine:3.22
 RUN apk add --no-cache ca-certificates tzdata \
     && addgroup -S app \
-    && adduser -S -G app app
+    && adduser -S -G app app \
+    && mkdir -p /var/lib/dezhonger/blog-media \
+    && chown app:app /var/lib/dezhonger/blog-media
 COPY --from=builder /out/api /usr/local/bin/api
 USER app
 EXPOSE 8080

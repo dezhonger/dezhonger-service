@@ -6,15 +6,17 @@ import (
 	"log/slog"
 	"net/http"
 	"runtime/debug"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type App struct {
-	cfg Config
-	db  *pgxpool.Pool
-	mux *http.ServeMux
+	cfg         Config
+	db          *pgxpool.Pool
+	mux         *http.ServeMux
+	blogLimiter blogAttemptLimiter
 }
 
 func New(ctx context.Context, cfg Config) (*App, error) {
@@ -65,6 +67,7 @@ func (a *App) Run(ctx context.Context) error {
 }
 
 func (a *App) routes() {
+	a.blogRoutes()
 	a.mux.HandleFunc("GET /api/healthz", a.healthz)
 	a.mux.HandleFunc("GET /api/ping", a.ping)
 	a.mux.HandleFunc("POST /api/auth/login", a.login)
@@ -112,7 +115,9 @@ func (a *App) validateOrigin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet && r.Method != http.MethodHead && r.Method != http.MethodOptions {
 			origin := r.Header.Get("Origin")
-			if origin != "" && a.cfg.PublicOrigin != "" && origin != a.cfg.PublicOrigin {
+			blogPath := strings.HasPrefix(r.URL.Path, "/api/blog/") || r.URL.Path == "/api/auth/login" || r.URL.Path == "/api/auth/logout"
+			allowed := origin == "" || origin == a.cfg.PublicOrigin || (origin == a.cfg.BlogOrigin && blogPath)
+			if !allowed {
 				writeError(w, http.StatusForbidden, "invalid_origin", "request origin is not allowed")
 				return
 			}

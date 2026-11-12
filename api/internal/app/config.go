@@ -11,6 +11,8 @@ type Config struct {
 	DatabaseURL  string
 	ListenAddr   string
 	PublicOrigin string
+	BlogOrigin   string
+	BlogMediaDir string
 	ServerRegion string
 	CookieName   string
 	CookieSecure bool
@@ -22,6 +24,8 @@ func LoadConfig() (Config, error) {
 		DatabaseURL:  os.Getenv("DATABASE_URL"),
 		ListenAddr:   envOr("LISTEN_ADDR", ":8080"),
 		PublicOrigin: os.Getenv("PUBLIC_ORIGIN"),
+		BlogOrigin:   envOr("BLOG_ORIGIN", "https://zmq.dezhonger.com"),
+		BlogMediaDir: envOr("BLOG_MEDIA_DIR", "/var/lib/dezhonger/blog-media"),
 		ServerRegion: envOr("SERVER_REGION", "Tencent Cloud · Hong Kong"),
 		CookieName:   envOr("SESSION_COOKIE_NAME", "dz_session"),
 		CookieSecure: envBool("COOKIE_SECURE", true),

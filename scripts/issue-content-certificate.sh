@@ -28,7 +28,6 @@ docker compose run --rm --entrypoint certbot certbot certonly \
   -d "zmq.$PUBLIC_DOMAIN" \
   -d "rby.$PUBLIC_DOMAIN" \
   -d "math.$PUBLIC_DOMAIN" \
-  -d "algo.$PUBLIC_DOMAIN" \
   -d "guwen.$PUBLIC_DOMAIN" \
   -d "english.$PUBLIC_DOMAIN" \
   -d "biology.$PUBLIC_DOMAIN" \

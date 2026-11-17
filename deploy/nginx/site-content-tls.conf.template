@@ -2,7 +2,7 @@ server {
   listen 80;
   listen [::]:80;
   server_name knowledge.${PUBLIC_DOMAIN} docs.${PUBLIC_DOMAIN} guwen.${PUBLIC_DOMAIN}
-              zmq.${PUBLIC_DOMAIN} rby.${PUBLIC_DOMAIN} math.${PUBLIC_DOMAIN}
+              zmq.${PUBLIC_DOMAIN} rby.${PUBLIC_DOMAIN}
               english.${PUBLIC_DOMAIN} biology.${PUBLIC_DOMAIN} geography.${PUBLIC_DOMAIN}
               physics.${PUBLIC_DOMAIN} chemistry.${PUBLIC_DOMAIN} history.${PUBLIC_DOMAIN};
 
@@ -34,7 +34,7 @@ server {
   listen 443 ssl;
   listen [::]:443 ssl;
   server_name knowledge.${PUBLIC_DOMAIN} guwen.${PUBLIC_DOMAIN}
-              rby.${PUBLIC_DOMAIN} math.${PUBLIC_DOMAIN}
+              rby.${PUBLIC_DOMAIN}
               english.${PUBLIC_DOMAIN} biology.${PUBLIC_DOMAIN} geography.${PUBLIC_DOMAIN}
               physics.${PUBLIC_DOMAIN} chemistry.${PUBLIC_DOMAIN} history.${PUBLIC_DOMAIN};
 
